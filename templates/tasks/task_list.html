@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="page-header d-print-none">
+    <div class="row g-2 align-items-center">
+        <div class="col">
+            <h2 class="page-title">My Hangarin Tasks</h2>
+        </div>
+    </div>
+</div>
+
+<div class="col-12 mt-3">
+    <div class="card">
+        <div class="table-responsive">
+            <table class="table table-vcenter card-table">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Category</th>
+                        <th>Priority</th>
+                        <th>Status</th>
+                        <th>Deadline</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for task in tasks %}
+                    <tr>
+                        <td>
+                            <div class="fw-bold">{{ task.title }}</div>
+                            <div class="text-muted small">{{ task.description|truncatewords:10 }}</div>
+                        </td>
+                        <td>{{ task.category.name }}</td>
+                        <td>
+                            <span class="badge bg-blue-lt">{{ task.priority.name }}</span>
+                        </td>
+                        <td>
+                            {% if task.status == "Completed" %}
+                                <span class="badge bg-success">Completed</span>
+                            {% elif task.status == "In Progress" %}
+                                <span class="badge bg-warning">In Progress</span>
+                            {% else %}
+                                <span class="badge bg-secondary">Pending</span>
+                            {% endif %}
+                        </td>
+                        <td class="text-muted">{{ task.deadline|date:"M d, Y" }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="text-center">No tasks found. Try running the population script!</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
