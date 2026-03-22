@@ -1,70 +1,54 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="page-header d-print-none">
-    <div class="row g-2 align-items-center">
-        <div class="col">
-            <h2 class="page-title">My Hangarin Tasks</h2>
-            <div class="text-muted mt-1">Organize daily tasks and manage priorities</div>
-        </div>
-    </div>
+<div class="page-header">
+    <h2 class="page-title">My Hangarin Tasks</h2>
+    <p class="text-muted">Organize daily tasks and manage priorities</p>
 </div>
 
-<div class="col-12 mt-3">
-    <div class="card">
-        <div class="table-responsive">
-            <table class="table table-vcenter card-table">
-                <thead>
-                    <tr>
-                        <th>Task Details</th>
-                        <th>Category</th>
-                        <th>Priority</th>
-                        <th>Status</th>
-                        <th>Deadline</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for task in tasks %}
-                    <tr>
-                        <td>
-                            <div class="fw-bold">{{ task.title }}</div>
-                            <div class="text-muted small text-truncate" style="max-width: 250px;">
-                                {{ task.description }}
-                            </div>
-                        </td>
-                        <td>
-                            <span class="badge bg-secondary-lt">{{ task.category.name }}</span>
-                        </td>
-                        <td>
-                            {% if task.priority.name == "Critical" or task.priority.name == "High" %}
-                                <span class="badge bg-danger-lt">{{ task.priority.name }}</span>
-                            {% else %}
-                                <span class="badge bg-blue-lt">{{ task.priority.name }}</span>
-                            {% endif %}
-                        </td>
-                        <td>
-                            {% if task.status == "Completed" %}
-                                <span class="badge bg-success">Completed</span>
-                            {% elif task.status == "In Progress" %}
-                                <span class="badge bg-warning">In Progress</span>
-                            {% else %}
-                                <span class="badge bg-secondary">Pending</span>
-                            {% endif %}
-                        </td>
-                        <td class="text-muted">
-                            {{ task.deadline|date:"M d, Y" }}
-                        </td>
-                    </tr>
-                    {% empty %}
-                    <tr>
-                        <td colspan="5" class="text-center py-4">
-                            <div class="text-muted">No tasks found. Try running your population script!</div>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
+<div class="card mt-3">
+    <div class="table-responsive">
+        <table class="table table-vcenter card-table">
+            <thead>
+                <tr>
+                    <th>Task Details</th>
+                    <th>Category</th>
+                    <th>Priority</th>
+                    <th>Status</th>
+                    <th>Deadline</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for task in tasks %}
+                <tr>
+                    <td>
+                        <div class="fw-bold">{{ task.title }}</div>
+                        <div class="text-muted small">{{ task.description|truncatechars:50 }}</div>
+                    </td>
+                    <td><span class="badge bg-secondary-lt">{{ task.category.name }}</span></td>
+                    <td>
+                        {% if task.priority.name == "Critical" or task.priority.name == "High" %}
+                            <span class="badge bg-danger-lt">{{ task.priority.name }}</span>
+                        {% else %}
+                            <span class="badge bg-blue-lt">{{ task.priority.name }}</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if task.status == "Completed" %}
+                            <span class="badge bg-success text-white">Completed</span>
+                        {% elif task.status == "In Progress" %}
+                            <span class="badge bg-warning text-white">In Progress</span>
+                        {% else %}
+                            <span class="badge bg-secondary text-white">Pending</span>
+                        {% endif %}
+                    </td>
+                    <td class="text-muted">{{ task.deadline|date:"M d, Y" }}</td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="5" class="text-center">No tasks found.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
 </div>
 {% endblock %}
